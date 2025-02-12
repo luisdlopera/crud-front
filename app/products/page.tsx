@@ -4,7 +4,7 @@ import { Button, Link } from "@heroui/react";
 export default function ProductPage() {
     return (
         <div>
-            <main className='w-10/12 mx-auto h-screen gap-10 flex flex-col pt-20'>
+            <main className='w-10/12 mx-auto h-full gap-10 flex flex-col pt-20 pb-[1000px]'>
                 <Button
                     as={Link}
                     color="primary"

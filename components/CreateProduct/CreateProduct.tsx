@@ -1,12 +1,12 @@
 'use client'
 
-import React from "react";
+import { useState } from "react";
 import { Form, Input, Button, Textarea } from "@heroui/react";
 
 export const CreateProduct = () => {
 
-    const [submitted, setSubmitted] = React.useState<any | null>(null);
-    const [errors, setErrors] = React.useState({});
+    const [submitted, setSubmitted] = useState<any | null>(null);
+    const [errors, setErrors] = useState({});
 
     const onSubmit = async (e: any) => {
         e.preventDefault();
@@ -61,7 +61,7 @@ export const CreateProduct = () => {
                 />
                 <Input
                     name="price"
-                    label="Price"
+                    label="Precio"
                     placeholder="0.00"
                     startContent={
                         <div className="pointer-events-none flex items-center">
@@ -74,8 +74,8 @@ export const CreateProduct = () => {
                 <Textarea
                     name='description'
                     className="max-w-xs"
-                    label="Description"
-                    placeholder="Enter your description"
+                    label="Descripción"
+                    placeholder="Ingrese descripción del producto"
                     isRequired
                 />
 

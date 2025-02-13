@@ -9,6 +9,8 @@ import {
     TableRow,
     TableCell,
     Tooltip,
+    CircularProgress,
+    Spinner,
 } from "@heroui/react";
 import { DeleteIcon } from "./DeleteIcon";
 import { EditIcon } from "./EditIcon";
@@ -30,14 +32,21 @@ export const DataTable = () => {
         description: string;
     }
 
+    const [loading, setLoading] = useState(true); 
     const [products, setProducts] = useState<Product[]>([]);
     const router = useRouter();
 
     useEffect(() => {
         fetch("http://localhost:3001/products")
             .then((res) => res.json())
-            .then((data) => setProducts(data))
-            .catch((error) => console.error("Error fetching products:", error));
+            .then((data) => {
+                setProducts(data);
+                setLoading(false); 
+            })
+            .catch((error) => {
+                console.error("Error fetching products:", error);
+                setLoading(false); 
+            });
     }, []);
 
     
@@ -94,23 +103,29 @@ export const DataTable = () => {
     };
 
     return (
-        <Table aria-label="Product Table">
-            <TableHeader>
-                {columns.map((col) => (
-                    <TableColumn key={col.uid}>{col.name}</TableColumn>
-                ))}
-            </TableHeader>
-            <TableBody emptyContent={"No exiten productos"}>
-                {products.map((product) => (
-                    <TableRow key={product.id}>
-                        {columns.map((col) => (
-                            <TableCell key={col.uid}>
-                                {renderCell(product, col.uid)}
-                            </TableCell>
-                        ))}
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+        <>
+        {loading ? (
+            <Spinner />
+        ) : (
+            <Table aria-label="Product Table">
+                <TableHeader>
+                    {columns.map((col) => (
+                        <TableColumn key={col.uid}>{col.name}</TableColumn>
+                    ))}
+                </TableHeader>
+                <TableBody emptyContent={"No exiten productos"}>
+                    {products.map((product) => (
+                        <TableRow key={product.id}>
+                            {columns.map((col) => (
+                                <TableCell key={col.uid}>
+                                    {renderCell(product, col.uid)}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        )}
+    </>
     );
 };

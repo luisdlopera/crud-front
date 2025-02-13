@@ -1,7 +1,7 @@
 
 import { CreateProduct } from '@/components/CreateProduct'
-import React from 'react'
 import { Button, Link } from "@heroui/react";
+import { ChevronLeft } from 'lucide-react';
 
 export default function CreateProductPage() {
     return (
@@ -9,18 +9,19 @@ export default function CreateProductPage() {
             <main className='w-4/5 mx-auto h-screen gap-10 flex flex-col pt-20'>
                 <Button
                     as={Link}
-                    color="primary"
                     href="/products"
                     variant="solid"
                     className='w-1/6'
+                    startContent={<ChevronLeft />}
                 >
                     Regresar
                 </Button>
-                <h1 className='text-lg text-white mx-auto w-full text-center'>
+                <h1 className='text-2xl font-semibold text-white mx-auto w-full text-center'>
                     Crear un producto
                 </h1>
 
                 <CreateProduct />
+
             </main>
         </div>
     )

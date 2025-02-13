@@ -40,13 +40,12 @@ npm run start
 ```plaintext
 my-app/
 │── public/        # Archivos estáticos
-│── src/
-│   ├── components/ # Componentes reutilizables
-│   ├── pages/      # Rutas de la app (CRUD)
-│   ├── services/   # Llamadas a la API
-│   ├── styles/     # Estilos globales
-│   ├── hooks/      # Custom Hooks
-│   ├── utils/      # Funciones utilitarias
+│── app/
+│   ├── actions/    # Para las peticiones REST
+│   ├── product/    # Rutas de la app (CRUD)
+│   ├── error.tsx   # Manejo de errores 
+│   ├── not-found.tsx     # Para 404 error
+|── components/     # Manejo de componentes
 │── .eslintrc.js    # Configuración de ESLint
 │── tailwind.config.js # Configuración de Tailwind CSS
 │── tsconfig.json   # Configuración de TypeScript

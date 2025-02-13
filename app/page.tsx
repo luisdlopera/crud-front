@@ -21,8 +21,8 @@ export default function Home() {
           <li>
             Codigo backend
             <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              <Link href="https://github.com/luisdlopera/crud-front">
-                  https://github.com/luisdlopera/crud-front
+              <Link href="https://github.com/luisdlopera/crud-back">
+                  https://github.com/luisdlopera/crud-back
                 </Link>
             </code>
           </li>

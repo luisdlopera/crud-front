@@ -15,10 +15,10 @@ import { EditIcon } from "./EditIcon";
 import { useRouter } from "next/navigation";
 
 export const columns = [
-    { name: "NAME", uid: "name" },
-    { name: "PRICE", uid: "price" },
-    { name: "DESCRIPTION", uid: "description" },
-    { name: "ACTIONS", uid: "actions" },
+    { name: "NOMBRE", uid: "name" },
+    { name: "PRECIO", uid: "price" },
+    { name: "DESCRIPCIÓN", uid: "description" },
+    { name: "ACCIÓN", uid: "actions" },
 ];
 
 export const DataTable = () => {
@@ -100,7 +100,7 @@ export const DataTable = () => {
                     <TableColumn key={col.uid}>{col.name}</TableColumn>
                 ))}
             </TableHeader>
-            <TableBody>
+            <TableBody emptyContent={"No exiten productos"}>
                 {products.map((product) => (
                     <TableRow key={product.id}>
                         {columns.map((col) => (

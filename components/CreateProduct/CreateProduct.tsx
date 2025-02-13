@@ -6,23 +6,21 @@ import { createProduct } from "@/app/actions/createProducts";
 
 export const CreateProduct = () => {
     const [submitted, setSubmitted] = useState<any | null>(null);
-    const [errors, setErrors] = useState<{ form?: string }>({});
 
     const onSubmit = async (formData: FormData) => {
-        const result = await createProduct(formData);
 
-        if (result.error) {
-            setErrors({ form: result.error });
-        } else {
-            setSubmitted(result);
-            setErrors({});
-        }
-    };
+        const result = await createProduct(formData);
+        setSubmitted(result);
+
+        console.log("Submitted data:", result);
+    }
+
 
     return (
         <Form
             className="w-full justify-center items-center space-y-4"
             action={onSubmit}
+            validationBehavior="native"
         >
             <div className="flex flex-col gap-4">
                 <Input
@@ -30,6 +28,14 @@ export const CreateProduct = () => {
                     label="Nombre"
                     isRequired
                     placeholder="Ingrese nombre de producto"
+                    validate={(value) => {
+                        if (!value) {
+                            return "El nombre es requerido.";
+                        } else if (value.length < 3) {
+                            return "El nombre debe tener al menos 3 caracteres.";
+                        }
+                        return null;
+                    }}
                 />
                 <Input
                     name="price"
@@ -42,6 +48,16 @@ export const CreateProduct = () => {
                     }
                     type="number"
                     isRequired
+                    validate={(value) => {
+                        if (!value) {
+                            return "El precio es requerido.";
+                        } else if (isNaN(Number(value))) {
+                            return "El precio debe ser un número.";
+                        } else if (Number(value) <= 0) {
+                            return "El precio debe ser mayor que 0.";
+                        }
+                        return null;
+                    }}
                 />
                 <Textarea
                     name="description"
@@ -49,6 +65,14 @@ export const CreateProduct = () => {
                     label="Descripción"
                     placeholder="Ingrese descripción del producto"
                     isRequired
+                    validate={(value) => {
+                        if (!value) {
+                            return "La descripción es requerida.";
+                        } else if (value.length < 10) {
+                            return "La descripción debe tener al menos 10 caracteres.";
+                        }
+                        return null;
+                    }}
                 />
 
                 <div className="flex gap-4">
@@ -64,9 +88,6 @@ export const CreateProduct = () => {
                 </div>
             )}
 
-            {errors.form && (
-                <div className="text-red-500 mt-2">{errors.form}</div>
-            )}
         </Form>
     );
 };

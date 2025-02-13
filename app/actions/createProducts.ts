@@ -9,8 +9,6 @@ export async function createProduct(formData: FormData) {
             price: typeof data.price === 'string' ? parseFloat(data.price) : data.price,
         };
 
-        console.log("Datos enviados al backend:", formattedData);
-
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
             method: "POST",
             headers: {

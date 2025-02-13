@@ -1,9 +1,10 @@
-
-import { CreateProduct } from '@/components/CreateProduct'
-import React from 'react'
+import { EditProduct } from '@/components/EditProduct';
 import { Button, Link } from "@heroui/react";
 
-export default function CreateProductPage() {
+
+export default function EditProductPage() {
+
+
     return (
         <div>
             <main className='w-4/5 mx-auto h-screen gap-10 flex flex-col pt-20'>
@@ -17,10 +18,10 @@ export default function CreateProductPage() {
                     Regresar
                 </Button>
                 <h1 className='text-lg text-white mx-auto w-full text-center'>
-                    Crear un producto
+                    Editar un producto
                 </h1>
 
-                <CreateProduct />
+                <EditProduct />
             </main>
         </div>
     )

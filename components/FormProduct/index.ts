@@ -1,1 +1,0 @@
-export { FormProduct } from "./FormProduct";

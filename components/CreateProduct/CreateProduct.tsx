@@ -3,7 +3,7 @@
 import React from "react";
 import { Form, Input, Button, Textarea } from "@heroui/react";
 
-export const FormProduct = () => {
+export const CreateProduct = () => {
 
     const [submitted, setSubmitted] = React.useState<any | null>(null);
     const [errors, setErrors] = React.useState({});
@@ -21,7 +21,7 @@ export const FormProduct = () => {
 
             setSubmitted(formattedData);
 
-            console.log('ladata a evniar es', formattedData);
+            console.log('la data a evniar es', formattedData);
 
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
                 method: 'POST',
@@ -41,7 +41,7 @@ export const FormProduct = () => {
             setErrors({});
         } catch (error) {
             console.log('There was an error!', error);
-            // setErrors({ submit: error.message });
+            
         }
     };
 

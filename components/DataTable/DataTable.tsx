@@ -12,6 +12,7 @@ import {
 } from "@heroui/react";
 import { DeleteIcon } from "./DeleteIcon";
 import { EditIcon } from "./EditIcon";
+import { useRouter } from "next/navigation";
 
 export const columns = [
     { name: "NAME", uid: "name" },
@@ -21,34 +22,69 @@ export const columns = [
 ];
 
 export const DataTable = () => {
+
     interface Product {
-        id: number;
+        id: string;
         name: string;
         price: number;
         description: string;
     }
 
     const [products, setProducts] = useState<Product[]>([]);
+    const router = useRouter();
 
     useEffect(() => {
-        fetch("http://localhost:3001/products") // Reemplaza con tu endpoint real
+        fetch("http://localhost:3001/products")
             .then((res) => res.json())
             .then((data) => setProducts(data))
             .catch((error) => console.error("Error fetching products:", error));
     }, []);
 
-    const renderCell = (product: any, columnKey: string) => {
-        const cellValue = product[columnKey];
+    
+    const handleDelete = async (id: string) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this product?");
+        if (!confirmDelete) return;
+
+        try {
+            const response = await fetch(`http://localhost:3001/products/${id}`, {
+                method: "DELETE",
+            });
+
+            if (!response.ok) throw new Error("Failed to delete product");
+
+            // Filtrar productos después de eliminar uno
+            setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+        } catch (error) {
+            console.error("Error deleting product:", error);
+        }
+    };
+
+    const handleEdit = (id: string) => {
+        router.push(`/products/edit/${id}`);
+    };
+
+    const renderCell = (product: Product, columnKey: string) => {
+        const cellValue = product[columnKey as keyof Product];
 
         switch (columnKey) {
             case "actions":
                 return (
                     <div className="flex gap-2">
                         <Tooltip content="Edit">
-                            <button className="text-blue-500"><EditIcon/></button>
+                            <button
+                                className="text-blue-500"
+                                onClick={() => handleEdit(product.id)}
+                            >
+                                <EditIcon />
+                            </button>
                         </Tooltip>
                         <Tooltip content="Delete">
-                            <button className="text-red-500"><DeleteIcon/></button>
+                            <button
+                                className="text-red-500"
+                                onClick={() => handleDelete(product.id)}
+                            >
+                                <DeleteIcon />
+                            </button>
                         </Tooltip>
                     </div>
                 );

@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CRUD Frontend con Next.js y HeroUI
 
-## Getting Started
+Este es un **frontend CRUD** construido con **Next.js 15**, **HeroUI**, **TailwindCSS**, y **TypeScript**.
 
-First, run the development server:
+## 🚀 Instalación
 
+### 1️⃣ Clonar el repositorio
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <URL_DEL_REPO>
+cd my-app
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2️⃣ Instalar dependencias
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🛠️ Configuración
+Si el backend requiere un API_URL, puedes crear un archivo `.env.local` en la raíz con la URL del backend:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
 
-## Learn More
+### 🚀 Ejecutar el servidor
 
-To learn more about Next.js, take a look at the following resources:
+#### En desarrollo
+```bash
+npm run dev
+```
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### En producción
+```bash
+npm run build
+npm run start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📂 Estructura del Proyecto
+```plaintext
+my-app/
+│── public/        # Archivos estáticos
+│── src/
+│   ├── components/ # Componentes reutilizables
+│   ├── pages/      # Rutas de la app (CRUD)
+│   ├── services/   # Llamadas a la API
+│   ├── styles/     # Estilos globales
+│   ├── hooks/      # Custom Hooks
+│   ├── utils/      # Funciones utilitarias
+│── .eslintrc.js    # Configuración de ESLint
+│── tailwind.config.js # Configuración de Tailwind CSS
+│── tsconfig.json   # Configuración de TypeScript
+│── package.json    # Dependencias y scripts
+│── README.md       # Documentación del proyecto
+```
 
-## Deploy on Vercel
+## 🔧 Comandos Útiles
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Comando         | Descripción                                    |
+|----------------|--------------------------------|
+| `npm run dev`  | Inicia el servidor en modo desarrollo |
+| `npm run build` | Compila la aplicación para producción |
+| `npm run start` | Inicia la aplicación en producción |
+| `npm run lint`  | Ejecuta ESLint para corregir errores de código |
+| `npm run format` | Formatea el código con Prettier |

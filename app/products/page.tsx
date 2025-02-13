@@ -1,8 +1,13 @@
-import { DataTable } from '@/components/DataTable'
+
 import { Button, Link } from "@heroui/react";
 import { ChevronLeft, PlusIcon } from 'lucide-react';
+import { getProducts } from "@/app/actions/getProducts";
+import { GetProductsDataTable } from "@/components/GetProductsDataTable";
 
-export default function ProductPage() {
+export default async function ProductPage() {
+
+    const products = await getProducts();
+
     return (
         <main className='w-10/12 mx-auto h-full gap-10 flex flex-col pt-20 pb-[1000px]'>
             <div className='w-full flex gap-4 justify-between'>
@@ -29,7 +34,7 @@ export default function ProductPage() {
             <h1 className='text-2xl font-semibold text-white mx-auto w-full text-center'>
                 Productos
             </h1>
-            <DataTable />
+            <GetProductsDataTable initialProducts={products} />
         </main>
     )
 }

@@ -12,7 +12,7 @@ interface Product {
     description: string;
 }
 
-export const EditProduct = ({ initialProduct }: { initialProduct: Product }) => {
+export const EditProductForm = ({ initialProduct }: { initialProduct: Product }) => {
     const router = useRouter();
     const [product, setProduct] = useState<Product>(initialProduct);
 

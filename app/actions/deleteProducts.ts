@@ -1,7 +1,8 @@
+"use server";
+
 export const deleteProduct = async (id: string) => {
-    "use server";
     try {
-        const response = await fetch(`http://localhost:3001/products/${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`, {
             method: "DELETE",
         });
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Form, Input, Button, Textarea } from "@heroui/react";
 import { createProduct } from "@/app/actions/createProducts";
 
-export const CreateProduct = () => {
+export const CreateProductForm = () => {
     const [submitted, setSubmitted] = useState<any | null>(null);
 
     const onSubmit = async (formData: FormData) => {

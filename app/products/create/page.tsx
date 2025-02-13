@@ -1,5 +1,5 @@
 
-import { CreateProduct } from '@/components/CreateProduct'
+import { CreateProductForm } from '@/components/CreateProductForm'
 import { Button, Link } from "@heroui/react";
 import { ChevronLeft } from 'lucide-react';
 
@@ -20,7 +20,7 @@ export default function CreateProductPage() {
                     Crear un producto
                 </h1>
 
-                <CreateProduct />
+                <CreateProductForm />
 
             </main>
         </div>

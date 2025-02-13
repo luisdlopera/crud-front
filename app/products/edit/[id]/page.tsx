@@ -1,7 +1,7 @@
 
 import { Button, Link } from "@heroui/react";
 import { getProductById } from "@/app/actions/getProductById";
-import { EditProduct } from "@/components/EditProduct";
+import { EditProductForm } from "@/components/EditProductForm";
 
 export default async function EditProductPage({ params }: { params: { id: string } }) {
     const product = await getProductById(params.id);
@@ -23,7 +23,7 @@ export default async function EditProductPage({ params }: { params: { id: string
                     Editar un producto
                 </h1>
 
-                <EditProduct initialProduct={product} />
+                <EditProductForm initialProduct={product} />
             </main>
         </div>
     )

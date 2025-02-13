@@ -12,7 +12,7 @@ export const updateProduct = async (id: string, product: any) => {
 
         if (!response.ok) throw new Error("Failed to update product");
 
-        return { success: true, message: "Product updated successfully!" };
+        return { success: true, message: "Producto actualizado correctamente" };
     } catch (error) {
         console.error("Error updating product:", error);
         return { success: false, message: "Error updating product" };

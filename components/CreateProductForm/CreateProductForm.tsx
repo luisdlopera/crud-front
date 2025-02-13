@@ -15,7 +15,6 @@ export const CreateProductForm = () => {
         console.log("Submitted data:", result);
     }
 
-
     return (
         <Form
             className="w-full justify-center items-center space-y-4"

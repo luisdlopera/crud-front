@@ -36,7 +36,7 @@ export const GetProductsDataTable = ({ initialProducts }: { initialProducts: Pro
     const router = useRouter();
 
     const handleDelete = async (id: string) => {
-        if (!confirm("Are you sure you want to delete this product?")) return;
+        if (!confirm("¿Estás seguro de que quieres eliminar este producto?")) return;
 
         setLoading(true);
         const result = await deleteProduct(id);

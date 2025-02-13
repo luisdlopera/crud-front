@@ -38,7 +38,11 @@ export const EditProductForm = ({ initialProduct }: { initialProduct: Product })
     };
 
     return (
-        <Form className="w-full space-y-4" onSubmit={onSubmit}>
+        <Form 
+            className="w-full justify-center items-center space-y-4"
+            onSubmit={onSubmit}
+            validationBehavior="native"
+        >
             <div className="flex flex-col gap-4">
                 <Input
                     name="name"
@@ -47,6 +51,14 @@ export const EditProductForm = ({ initialProduct }: { initialProduct: Product })
                     placeholder="Ingrese nombre de producto"
                     value={product.name}
                     onValueChange={(value) => handleValueChange("name", value)}
+                    validate={(value) => {
+                        if (!value) {
+                            return "El nombre es requerido.";
+                        } else if (value.length < 3) {
+                            return "El nombre debe tener al menos 3 caracteres.";
+                        }
+                        return null;
+                    }}
                 />
                 <Input
                     name="price"
@@ -56,6 +68,16 @@ export const EditProductForm = ({ initialProduct }: { initialProduct: Product })
                     isRequired
                     value={product.price.toString()}
                     onValueChange={(value) => handleValueChange("price", Number(value))}
+                    validate={(value) => {
+                        if (!value) {
+                            return "El precio es requerido.";
+                        } else if (isNaN(Number(value))) {
+                            return "El precio debe ser un número.";
+                        } else if (Number(value) <= 0) {
+                            return "El precio debe ser mayor que 0.";
+                        }
+                        return null;
+                    }}
                 />
                 <Textarea
                     name="description"
@@ -64,6 +86,14 @@ export const EditProductForm = ({ initialProduct }: { initialProduct: Product })
                     isRequired
                     value={product.description}
                     onValueChange={(value) => handleValueChange("description", value)}
+                    validate={(value) => {
+                        if (!value) {
+                            return "La descripción es requerida.";
+                        } else if (value.length < 10) {
+                            return "La descripción debe tener al menos 10 caracteres.";
+                        }
+                        return null;
+                    }}
                 />
                 <Button className="w-full" color="primary" type="submit">
                     Actualizar

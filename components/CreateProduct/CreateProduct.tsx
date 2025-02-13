@@ -1,58 +1,30 @@
-'use client'
+"use client";
 
 import { useState } from "react";
 import { Form, Input, Button, Textarea } from "@heroui/react";
+import { createProduct } from "@/app/actions/createProducts";
 
 export const CreateProduct = () => {
-
     const [submitted, setSubmitted] = useState<any | null>(null);
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState<{ form?: string }>({});
 
-    const onSubmit = async (e: any) => {
-        e.preventDefault();
+    const onSubmit = async (formData: FormData) => {
+        const result = await createProduct(formData);
 
-        try {
-            const data = Object.fromEntries(new FormData(e.currentTarget));
-
-            const formattedData = {
-                ...data,
-                price: typeof data.price === 'string' ? parseFloat(data.price) : data.price,
-            };
-
-            setSubmitted(formattedData);
-
-            console.log('la data a evniar es', formattedData);
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formattedData),
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const result = await response.json();
-
+        if (result.error) {
+            setErrors({ form: result.error });
+        } else {
             setSubmitted(result);
             setErrors({});
-        } catch (error) {
-            console.log('There was an error!', error);
-            
         }
     };
 
     return (
         <Form
             className="w-full justify-center items-center space-y-4"
-            validationBehavior="native"
-            validationErrors={errors}
-            onSubmit={onSubmit}
+            action={onSubmit}
         >
-            <div className="flex flex-col gap-4 ">
+            <div className="flex flex-col gap-4">
                 <Input
                     name="name"
                     label="Nombre"
@@ -72,7 +44,7 @@ export const CreateProduct = () => {
                     isRequired
                 />
                 <Textarea
-                    name='description'
+                    name="description"
                     className="max-w-xs"
                     label="Descripción"
                     placeholder="Ingrese descripción del producto"
@@ -91,6 +63,10 @@ export const CreateProduct = () => {
                     Submitted data: <pre>{JSON.stringify(submitted, null, 2)}</pre>
                 </div>
             )}
+
+            {errors.form && (
+                <div className="text-red-500 mt-2">{errors.form}</div>
+            )}
         </Form>
     );
-}
+};

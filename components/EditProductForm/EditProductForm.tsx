@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Form, Input, Button, Textarea } from "@heroui/react";
+import { Form, Input, Button, Textarea, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { updateProduct } from "@/app/actions/updateProduct";
 
@@ -15,6 +15,7 @@ interface Product {
 export const EditProductForm = ({ initialProduct }: { initialProduct: Product }) => {
     const router = useRouter();
     const [product, setProduct] = useState<Product>(initialProduct);
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const handleValueChange = (field: keyof Product, value: string | number) => {
         setProduct((prev) => ({ ...prev, [field]: value }));
@@ -30,75 +31,97 @@ export const EditProductForm = ({ initialProduct }: { initialProduct: Product })
         const result = await updateProduct(product.id, formattedData);
 
         if (result.success) {
-            alert(result.message);
-            router.push("/products");
+            onOpen();
         } else {
             console.error(result.message);
         }
     };
 
     return (
-        <Form 
-            className="w-full justify-center items-center space-y-4"
-            onSubmit={onSubmit}
-            validationBehavior="native"
-        >
-            <div className="flex flex-col gap-4">
-                <Input
-                    name="name"
-                    label="Nombre"
-                    isRequired
-                    placeholder="Ingrese nombre de producto"
-                    value={product.name}
-                    onValueChange={(value) => handleValueChange("name", value)}
-                    validate={(value) => {
-                        if (!value) {
-                            return "El nombre es requerido.";
-                        } else if (value.length < 3) {
-                            return "El nombre debe tener al menos 3 caracteres.";
-                        }
-                        return null;
-                    }}
-                />
-                <Input
-                    name="price"
-                    label="Price"
-                    placeholder="0.00"
-                    type="number"
-                    isRequired
-                    value={product.price.toString()}
-                    onValueChange={(value) => handleValueChange("price", Number(value))}
-                    validate={(value) => {
-                        if (!value) {
-                            return "El precio es requerido.";
-                        } else if (isNaN(Number(value))) {
-                            return "El precio debe ser un número.";
-                        } else if (Number(value) <= 0) {
-                            return "El precio debe ser mayor que 0.";
-                        }
-                        return null;
-                    }}
-                />
-                <Textarea
-                    name="description"
-                    label="Descripción"
-                    placeholder="Ingrese la descripción"
-                    isRequired
-                    value={product.description}
-                    onValueChange={(value) => handleValueChange("description", value)}
-                    validate={(value) => {
-                        if (!value) {
-                            return "La descripción es requerida.";
-                        } else if (value.length < 10) {
-                            return "La descripción debe tener al menos 10 caracteres.";
-                        }
-                        return null;
-                    }}
-                />
-                <Button className="w-full" color="primary" type="submit">
-                    Actualizar
-                </Button>
-            </div>
-        </Form>
+        <>
+            <Form 
+                className="w-full justify-center items-center space-y-4"
+                onSubmit={onSubmit}
+                validationBehavior="native"
+            >
+                <div className="flex flex-col gap-4">
+                    <Input
+                        name="name"
+                        label="Nombre"
+                        isRequired
+                        placeholder="Ingrese nombre de producto"
+                        value={product.name}
+                        onValueChange={(value) => handleValueChange("name", value)}
+                        validate={(value) => {
+                            if (!value) {
+                                return "El nombre es requerido.";
+                            } else if (value.length < 3) {
+                                return "El nombre debe tener al menos 3 caracteres.";
+                            }
+                            return null;
+                        }}
+                    />
+                    <Input
+                        name="price"
+                        label="Price"
+                        placeholder="0.00"
+                        type="number"
+                        isRequired
+                        value={product.price.toString()}
+                        onValueChange={(value) => handleValueChange("price", Number(value))}
+                        validate={(value) => {
+                            if (!value) {
+                                return "El precio es requerido.";
+                            } else if (isNaN(Number(value))) {
+                                return "El precio debe ser un número.";
+                            } else if (Number(value) <= 0) {
+                                return "El precio debe ser mayor que 0.";
+                            }
+                            return null;
+                        }}
+                    />
+                    <Textarea
+                        name="description"
+                        label="Descripción"
+                        placeholder="Ingrese la descripción"
+                        isRequired
+                        value={product.description}
+                        onValueChange={(value) => handleValueChange("description", value)}
+                        validate={(value) => {
+                            if (!value) {
+                                return "La descripción es requerida.";
+                            } else if (value.length < 10) {
+                                return "La descripción debe tener al menos 10 caracteres.";
+                            }
+                            return null;
+                        }}
+                    />
+                    <Button className="w-full" color="primary" type="submit">
+                        Actualizar
+                    </Button>
+                </div>
+            </Form>
+
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader>Éxito</ModalHeader>
+                            <ModalBody>
+                                <p>El producto ha sido actualizado correctamente.</p>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="primary" onPress={() => {
+                                    onClose();
+                                    router.push("/products");
+                                }}>
+                                    Aceptar
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+        </>
     );
 };

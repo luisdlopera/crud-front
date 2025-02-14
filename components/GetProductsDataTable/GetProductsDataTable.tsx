@@ -10,11 +10,19 @@ import {
     TableCell,
     Tooltip,
     Spinner,
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Button,
+    useDisclosure,
 } from "@heroui/react";
 import { DeleteIcon } from "./DeleteIcon";
 import { EditIcon } from "./EditIcon";
 import { useRouter } from "next/navigation";
 import { deleteProduct } from "@/app/actions/deleteProducts";
+import { AlertTriangle } from "lucide-react";
 
 interface Product {
     id: string;
@@ -33,24 +41,31 @@ export const columns = [
 export const GetProductsDataTable = ({ initialProducts }: { initialProducts: Product[] }) => {
     const [products, setProducts] = useState<Product[]>(initialProducts);
     const [loading, setLoading] = useState(false);
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const router = useRouter();
 
-    const handleDelete = async (id: string) => {
-        if (!confirm("¿Estás seguro de que quieres eliminar este producto?")) return;
-
+    const handleDelete = async () => {
+        if (!selectedProduct) return;
         setLoading(true);
-        const result = await deleteProduct(id);
+        const result = await deleteProduct(selectedProduct.id);
         setLoading(false);
 
         if (result.success) {
-            setProducts((prev) => prev.filter((product) => product.id !== id));
+            setProducts((prev) => prev.filter((product) => product.id !== selectedProduct.id));
         } else {
             alert(result.message);
         }
+        onOpenChange();
     };
 
     const handleEdit = (id: string) => {
         router.push(`/products/edit/${id}`);
+    };
+
+    const openDeleteModal = (product: Product) => {
+        setSelectedProduct(product);
+        onOpen();
     };
 
     const renderCell = (product: Product, columnKey: string) => {
@@ -65,7 +80,7 @@ export const GetProductsDataTable = ({ initialProducts }: { initialProducts: Pro
                         </button>
                     </Tooltip>
                     <Tooltip content="Delete">
-                        <button className="text-red-500" onClick={() => handleDelete(product.id)}>
+                        <button className="text-red-500" onClick={() => openDeleteModal(product)}>
                             <DeleteIcon />
                         </button>
                     </Tooltip>
@@ -75,24 +90,54 @@ export const GetProductsDataTable = ({ initialProducts }: { initialProducts: Pro
         return cellValue;
     };
 
-    return loading ? (
-        <Spinner />
-    ) : (
-        <Table aria-label="Product Table">
-            <TableHeader>
-                {columns.map((col) => (
-                    <TableColumn key={col.uid}>{col.name}</TableColumn>
-                ))}
-            </TableHeader>
-            <TableBody emptyContent="No existen productos">
-                {products.map((product) => (
-                    <TableRow key={product.id}>
-                        {columns.map((col) => (
-                            <TableCell key={col.uid}>{renderCell(product, col.uid)}</TableCell>
-                        ))}
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+    return (
+        <>
+            {loading && <Spinner />}
+            <Table aria-label="Product Table">
+                <TableHeader>
+                    {columns.map((col) => (
+                        <TableColumn key={col.uid}>{col.name}</TableColumn>
+                    ))}
+                </TableHeader>
+                <TableBody emptyContent="No existen productos">
+                    {products.map((product) => (
+                        <TableRow key={product.id}>
+                            {columns.map((col) => (
+                                <TableCell key={col.uid}>{renderCell(product, col.uid)}</TableCell>
+                            ))}
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+
+            {/* Modal para confirmación de eliminación */}
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalBody>
+                                <div className="flex justify-center mb-6">
+                                    <AlertTriangle className="w-24 h-24 text-destructive" />
+                                </div>
+                                <h1 className="text-4xl font-bold mb-4 text-foreground">
+                                    Confirmar eliminación
+                                </h1>
+                                <p className="text-muted-foreground mb-6">
+                                    ¿Estás seguro de que quieres eliminar este producto?
+                                </p>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button color="primary" variant="light" onPress={onClose}>
+                                    Cancelar
+                                </Button>
+                                <Button color="danger" onPress={handleDelete}>
+                                    Borrar
+                                </Button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+        </>
     );
 };
